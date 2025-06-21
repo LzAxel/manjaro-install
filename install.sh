@@ -77,6 +77,48 @@ echo "Setting up environment variables for Java..."
 echo 'export JAVA_HOME=/opt/zulu-17' >> ~/.zshrc
 echo 'export PATH=$JAVA_HOME/bin:$PATH' >> ~/.zshrc
 
+# Установка IntelliJ IDEA Ultimate from official website
+echo "Установка IntelliJ IDEA Ultimate from official website..."
+INTELLIJ_TAR_URL="https://download.jetbrains.com/idea/ideaIU-2024.2.4.tar.gz"
+INTELLIJ_TAR_FILE="ideaIU-2024.2.4.tar.gz"
+
+# Download the tar file
+wget -O /tmp/$INTELLIJ_TAR_FILE $INTELLIJ_TAR_URL || { echo "Failed to download IntelliJ IDEA"; exit 1; }
+
+# Extract to /opt
+echo "Extracting IntelliJ IDEA..."
+mkdir -p /opt/intellij-idea
+tar -xzf /tmp/$INTELLIJ_TAR_FILE -C /opt/intellij-idea --strip-components=1 || { echo "Failed to extract IntelliJ IDEA"; exit 1; }
+
+# Verify installation
+if /opt/intellij-idea/bin/idea.sh --version 2>&1 | grep -q "IntelliJ IDEA"; then
+  echo "IntelliJ IDEA installed successfully."
+else
+  echo "Failed to verify IntelliJ IDEA installation"
+  exit 1
+fi
+
+# Установка GoLand from official website
+echo "Установка GoLand from official website..."
+GOLAND_TAR_URL="https://download.jetbrains.com/go/goland-2024.2.4.tar.gz"
+GOLAND_TAR_FILE="goland-2024.2.4.tar.gz"
+
+# Download the tar file
+wget -O /tmp/$GOLAND_TAR_FILE $GOLAND_TAR_URL || { echo "Failed to download GoLand"; exit 1; }
+
+# Extract to /opt
+echo "Extracting GoLand..."
+mkdir -p /opt/goland
+tar -xzf /tmp/$GOLAND_TAR_FILE -C /opt/goland --strip-components=1 || { echo "Failed to extract GoLand"; exit 1; }
+
+# Verify installation
+if /opt/goland/bin/goland.sh --version 2>&1 | grep -q "GoLand"; then
+  echo "GoLand installed successfully."
+else
+  echo "Failed to verify GoLand installation"
+  exit 1
+fi
+
 # Установка Docker
 echo "Установка Docker..."
 pacman -S --noconfirm docker docker-compose || { echo "Failed to install Docker"; exit 1; }
@@ -117,14 +159,6 @@ flatpak install flathub com.google.Chrome
 # Установка Bitwarden
 echo "Установка Bitwarden..."
 flatpak install flathub com.bitwarden.desktop
-
-# Установка IntelliJ IDEA Ultimate
-echo "Установка IntelliJ IDEA Ultimate..."
-flatpak install flathub com.jetbrains.IntelliJ-IDEA-Ultimate -y || { echo "Failed to install IntelliJ IDEA"; exit 1; }
-
-# Установка GoLand
-echo "Установка GoLand..."
-flatpak install flathub com.jetbrains.GoLand -y || { echo "Failed to install Goland"; exit 1; }
 
 # Установка Oh My Zsh
 echo "Установка Oh My Zsh..."
@@ -205,8 +239,7 @@ echo "Настройка переключения раскладки на Caps L
 if [ -n "$DESKTOP_SESSION" ] && [ "$DESKTOP_SESSION" = "gnome" ]; then
   gsettings set org.gnome.desktop.input-sources xkb-options "['caps:lock', 'grp:caps_toggle']" || { echo "Failed to configure Caps Lock"; }
   # Настройка горячих клавиш для Flameshot (Print Screen для запуска)
-  gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/Helen’s LiveJournal
- /org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']" || { echo "Failed to set custom keybindings"; }
+  gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/']" || { echo "Failed to set custom keybindings"; }
   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ name "Flameshot" || { echo "Failed to set Flameshot keybinding name"; }
   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ command "flameshot gui" || { echo "Failed to set Flameshot command"; }
   gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/ binding "Print" || { echo "Failed to set Flameshot keybinding"; }
