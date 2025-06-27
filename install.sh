@@ -11,7 +11,7 @@ pacman -Syu --noconfirm || { echo "Failed to update system"; exit 1; }
 
 # Установка базовых утилит
 echo "Установка базовых утилит (git, curl, wget, unzip, make)..."
-pacman -S --noconfirm git curl wget unzip make || { echo "Failed to install base utilities"; exit 1; }
+pacman -S --noconfirm xclip git curl wget unzip make bat || { echo "Failed to install base utilities"; exit 1; }
 
 # Установка yay (AUR helper)
 echo "Установка yay (AUR helper)..."
