@@ -13,14 +13,6 @@ pacman -Syu --noconfirm || { echo "Failed to update system"; exit 1; }
 echo "Установка базовых утилит (git, curl, wget, unzip, make)..."
 pacman -S --noconfirm git curl wget unzip make || { echo "Failed to install base utilities"; exit 1; }
 
-# Установка yay (AUR helper)
-echo "Установка yay (AUR helper)..."
-git clone https://aur.archlinux.org/yay.git /tmp/yay || { echo "Failed to clone yay repository"; exit 1; }
-cd /tmp/yay
-makepkg -si --noconfirm || { echo "Failed to install yay"; exit 1; }
-cd -
-rm -rf /tmp/yay
-
 # Установка системных утилит
 echo "Установка htop, tmux, zsh..."
 pacman -S --noconfirm htop tmux zsh || { echo "Failed to install system utilities"; exit 1; }
@@ -154,11 +146,11 @@ flatpak install flathub com.getpostman.Postman -y || { echo "Failed to install P
 
 # Установка Google Chrome
 echo "Установка Google Chrome..."
-flatpak install flathub com.google.Chrome
+flatpak install flathub com.google.Chrome -y || { echo "Failed to install Google Chrome"; exit 1; }
 
 # Установка Bitwarden
 echo "Установка Bitwarden..."
-flatpak install flathub com.bitwarden.desktop
+flatpak install flathub com.bitwarden.desktop -y || { echo "Failed to install Bitwarden"; exit 1; }
 
 # Установка Oh My Zsh
 echo "Установка Oh My Zsh..."
@@ -169,14 +161,6 @@ chsh -s $(which zsh) $(logname)
 echo "Установка плагинов zsh-autosuggestions и zsh-syntax-highlighting..."
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions || { echo "Failed to install zsh-autosuggestions"; exit 1; }
 git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting || { echo "Failed to install zsh-syntax-highlighting"; exit 1; }
-
-# Установка шрифтов для Powerlevel10k
-echo "Установка шрифтов для Powerlevel10k..."
-pacman -S --noconfirm ttf-meslo-nerd-font-powerlevel10k || { echo "Failed to install Powerlevel10k fonts"; exit 1; }
-
-# Установка темы Powerlevel10k
-echo "Установка темы Powerlevel10k для zsh..."
-git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/powerlevel10k || { echo "Failed to install Powerlevel10k"; exit 1; }
 
 # Настройка .zshrc
 echo "Настройка .zshrc..."
